@@ -1,0 +1,75 @@
+React Redux -day-12
+
+ create a cart page with per-item price, per-item quantity,Total quantity and total amount. Increase or Decrease the per unit Quantity that should automatically updates the total Quantity and Amount.
+
+
+
+
+import React, { useState } from 'react';
+
+const Cart = () => {
+ const [cartItems, setCartItems] = useState([
+    { id: 1, title: 'Book 1', price: 10, quantity: 1 },
+    { id: 2, title: 'Book 2', price: 20, quantity: 1 },
+ ]);
+
+ const increaseQuantity = (id) => {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+ };
+
+ const decreaseQuantity = (id) => {
+    setCartItems(
+      cartItems.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+ };
+
+ const calculateTotalQuantity = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+ };
+
+ const calculateTotalAmount = () => {
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+ };
+
+ return (
+    <div>
+      <h2>Cart</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartItems.map((item) => (
+            <tr key={item.id}>
+              <td>{item.title}</td>
+              <td>{item.price}</td>
+              <td>
+                <button onClick={() => decreaseQuantity(item.id)}>-</button>
+                {item.quantity}
+                <button onClick={() => increaseQuantity(item.id)}>+</button>
+              </td>
+              <td>
+                <button>Remove</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <h3>Total Quantity: {calculateTotalQuantity()}</h3>
+      <h3>Total Amount: {calculateTotalAmount()}</h3>
+    </div>
+ );
+};
+
+export default Cart;
